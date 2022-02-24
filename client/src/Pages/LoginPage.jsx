@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { login } from "../redux/apiCalls";
 import { mobile } from "../responsive";
@@ -63,13 +64,6 @@ const Error = styled.span`
   color: red;
 `;
 
-const Link = styled.a`
-  margin: 5px 0;
-  font-size: 12px;
-  text-decoration: underline;
-  cursor: pointer;
-`;
-
 const LoginPage = () => {
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
@@ -103,8 +97,30 @@ const LoginPage = () => {
             LOGIN
           </Button>
           {error && <Error>Something went wrong</Error>}
-          <Link>FORGOT THE PASSWORD?</Link>
-          <Link>CREATE A NEW ACCOUNT</Link>
+          <Link
+            to={"/register"}
+            style={{
+              color: " #f4dfba",
+              margin: " 5px 0",
+              fontSize: "12px",
+              textDecoration: "underline",
+              cursor: "pointer",
+            }}
+          >
+            FORGOT THE PASSWORD?
+          </Link>
+          <Link
+            to={"/register"}
+            style={{
+              color: " #f4dfba",
+              margin: " 5px 0",
+              fontSize: "12px",
+              textDecoration: "underline",
+              cursor: "pointer",
+            }}
+          >
+            CREATE A NEW ACCOUNT
+          </Link>
         </Form>
       </Wrapper>
     </Container>

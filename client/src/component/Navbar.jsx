@@ -3,8 +3,9 @@ import styled from "styled-components";
 import { Search, ShoppingCart } from "@mui/icons-material";
 import { Badge } from "@mui/material";
 import { mobile } from "../responsive";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { signOut } from "../redux/apiCalls";
 
 const Container = styled.div`
   height: 60px;
@@ -82,7 +83,19 @@ const MenuItem = styled.div`
 `;
 
 const Navbar = () => {
-  const quantity = useSelector((state) => state.cart.quantity);
+  const currentUser = useSelector((state) => state.user.currentUser);
+  const quantity = currentUser
+    ? // eslint-disable-next-line react-hooks/rules-of-hooks
+      useSelector((state) => state.cart.quantity)
+    : 0;
+  const dispatch = useDispatch();
+
+  const handleSignOut = () => {
+    signOut(dispatch, currentUser);
+    window.location.reload(false);
+  };
+
+  console.log(currentUser);
 
   return (
     <Container>
@@ -102,29 +115,48 @@ const Navbar = () => {
           <LogoSm>MOEZA.</LogoSm>
         </Center>
 
-        <Right>
-          <Link
-            to={"/register"}
-            style={{ textDecoration: "none", color: "#EEC373" }}
-          >
-            <MenuItem>REGISTER</MenuItem>
-          </Link>
-
-          <Link
-            to={"/login"}
-            style={{ textDecoration: "none", color: "#EEC373" }}
-          >
-            <MenuItem>SIGN IN</MenuItem>
-          </Link>
-
-          <Link to={"/cart"}>
-            <MenuItem>
-              <Badge badgeContent={quantity} color="warning">
-                <ShoppingCart sx={{ color: "#EEC373" }} />
-              </Badge>
+        {currentUser ? (
+          <Right>
+            <MenuItem
+              onClick={handleSignOut}
+              style={{ textDecoration: "none", color: "#EEC373" }}
+            >
+              SIGN OUT
             </MenuItem>
-          </Link>
-        </Right>
+
+            <Link to={"/cart"}>
+              <MenuItem>
+                <Badge badgeContent={quantity} color="warning">
+                  <ShoppingCart sx={{ color: "#EEC373" }} />
+                </Badge>
+              </MenuItem>
+            </Link>
+          </Right>
+        ) : (
+          <Right>
+            <Link
+              to={"/register"}
+              style={{ textDecoration: "none", color: "#EEC373" }}
+            >
+              <MenuItem>REGISTER</MenuItem>
+            </Link>
+
+            <Link
+              to={"/login"}
+              style={{ textDecoration: "none", color: "#EEC373" }}
+            >
+              <MenuItem>SIGN IN</MenuItem>
+            </Link>
+
+            <Link to={"/cart"}>
+              <MenuItem>
+                <Badge badgeContent={quantity} color="warning">
+                  <ShoppingCart sx={{ color: "#EEC373" }} />
+                </Badge>
+              </MenuItem>
+            </Link>
+          </Right>
+        )}
       </Wrapper>
     </Container>
   );

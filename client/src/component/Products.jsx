@@ -3,7 +3,6 @@ import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
 import styled from "styled-components";
-import { PopularProductsData } from "../data";
 import ProductItem from "./ProductItem";
 
 const Container = styled.div`
@@ -64,8 +63,8 @@ const Products = ({ cat, filters, sort }) => {
         ? filteredProducts.map((item) => {
             return <ProductItem key={item._id} item={item} />;
           })
-        : PopularProductsData.slice(0, 8).map((item) => {
-            return <ProductItem key={item.id} item={item} />;
+        : products.slice(0, 8).map((item) => {
+            return <ProductItem key={item._id} item={item} />;
           })}
     </Container>
   );

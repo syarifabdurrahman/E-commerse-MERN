@@ -122,14 +122,6 @@ const PriceDetail = styled.div`
   justify-content: center;
 `;
 
-//hr
-const Hr = styled.hr`
-  margin: 5px 0;
-  background-color: #dddddd;
-  border: none;
-  height: 1px;
-`;
-
 //Summary
 const Summary = styled.div`
   flex: 1;
@@ -185,10 +177,11 @@ const CartPage = () => {
           tokenId: stripeToken.id,
           amount: cart.total * 1000,
         });
-        console.log(res.data);
         history("/success", {
-          stripeData: res.data,
-          products: cart,
+          state: {
+            stripeData: res.data,
+            products: cart,
+          },
         });
       } catch {}
     };
@@ -209,14 +202,14 @@ const CartPage = () => {
           <TopButton>CONTINUE SHOPPING</TopButton>
           <TopTextContainer>
             <TopText>Shopping Bag(2)</TopText>
-            <TopText>Whistlist(2)</TopText>
+            <TopText>Whistlist(0)</TopText>
           </TopTextContainer>
           <TopButton type="filled">CHECKOUT NOW</TopButton>
         </Top>
         <Bottom>
           <Info>
             {cart.products?.map((product) => (
-              <Product>
+              <Product key={product._id}>
                 <ProductDetail>
                   <Image src={product.img} />
                   <Details>
