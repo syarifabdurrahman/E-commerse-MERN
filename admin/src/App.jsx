@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import Sidebar from "./components/sidebar/Sidebar";
 import Topbar from "./components/topbar/Topbar";
 import "./App.css";
@@ -25,6 +26,9 @@ const Container = styled.div`
 
 function App() {
   const adminLogin = useSelector((state) => state.user.currentUser.isAdmin);
+
+  console.log(adminLogin);
+
   return (
     <Router>
       <Topbar />
@@ -40,11 +44,26 @@ function App() {
             path="/users"
             element={adminLogin ? <UserList /> : <Navigate to={"/login"} />}
           />
-          <Route path="/user/:userId" element={<User />} />
-          <Route path="/newUser" element={<NewUser />} />
-          <Route path="/products" element={<ProductList />} />
-          <Route path="/product/:productId" element={<Product />} />
-          <Route path="/newproduct" element={<NewProduct />} />
+          <Route
+            path="/user/:userId"
+            element={adminLogin ? <User /> : <Navigate to={"/login"} />}
+          />
+          <Route
+            path="/newUser"
+            element={adminLogin ? <NewUser /> : <Navigate to={"/login"} />}
+          />
+          <Route
+            path="/products"
+            element={adminLogin ? <ProductList /> : <Navigate to={"/login"} />}
+          />
+          <Route
+            path="/product/:productId"
+            element={adminLogin ? <Product /> : <Navigate to={"/login"} />}
+          />
+          <Route
+            path="/newproduct"
+            element={adminLogin ? <NewProduct /> : <Navigate to={"/login"} />}
+          />
           <Route
             path="/login"
             element={adminLogin ? <Navigate to={"/"} /> : <Login />}
